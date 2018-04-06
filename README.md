@@ -1,6 +1,4 @@
-//=========
 # Afternoon speech
-===
 ## Tips for reading code
 One way to improve programming skills is Read Great program.
 Most of us have to read lots of code that perhaps unstructured
@@ -88,4 +86,3 @@ you while reading a big program. Thanks for you listening.
 6. Write UnitTest
 7. Comment the code
 8. Clean up the code
-      == END ==
