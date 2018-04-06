@@ -1,3 +1,54 @@
 _site/
 .sass-cache/
 .jekyll-metadata
+====================================================================
+
+おはよanh!
+
+E có 1 số câu hỏi về video coding:  
+
+Em đang investigate cái CABAC entropy encoding trong
+H.264 CODEC, theo e hiểu đơn giản là:
+Element syntax -> [CABAC] -> bitstream  
+
+	Chính xác là : 
+transform coefficients or Motion vector or macroblock headers, picture headers etc => Entropy coding (CABAC) => Bitstream
+            Element syntax là vầy nè: Dịch đơn giản là thành phần cấu trúc của bitstream. Tức nó quy định trong dãy bit đó thì có mấy phần, mỗi phần có ý nghĩa gì. Cái này là output cuối cuối cuối cuối cùng luôn.
+
+Bitstream: cái này nó là 1 chuỗi bit 00101010… hay có cấu trúc kiểu
+1 chuỗi NAL…NAL…nối liền với nhau zậy a???
+
+	Có cấu trúc chuỗi NAL unit. NAL là khái niệm của lớp Network, lớp này nó nhìn bitstream thì thấy nhiều NAL unit. Có 4 loại NAL unit: SPS, PPS, IDR slice, slice.
+
+E đọc trong:
+[T-REC-H.264-201201-I!!PDF-E.pdf]  => Em có tài liệu này không H264-Advanced-Video-Compression-Standard-v2-I.E.Richardson, có thì đọc nó là được rồi đừng có đọc cái Standard đó >.< bố ai hiểu nổi!
+9.3 CABAC parsing process for slice data
+This process is invoked when parsing syntax elements with descriptor ae(v) in clauses 7.3.4 and 7.3.5 when
+entropy_coding_mode_flag is equal to 1.
+Inputs to this process are a request for a value of a syntax element and values of prior parsed syntax elements.
+Output of this process is the value of the syntax element
+Có phải cái này là quá trình này là Decode đúng không anh?! => ĐÚNG
+-> Cái value of the syntax element là cái giá trị của mấy từ in đậm trong hình đúng không anh? => Cái value của syntax là cái value lúc đọc được khi parsing bitstream 
+(cái hình này không đúng, chỉ là giả sử thôi a)
+ 
+
+À còn 1 cái nữa anh:
+Là 
+1.	đơn vị của stream là NAL unit mà video lại là frame. Làm sao để map giữa NAL vs FRAME a? =
+	NAL là khái niệm của lớp Network, lớp này nó nhìn bitstream thì thấy nhiều NAL unit. Có 4 loại NAL unit: SPS, PPS, IDR slice, slice.
+	Frame là khái niệm của video compression technique nói chung. Đơn giản là Frame sẽ được thể hiện bằng nhiều NAL unit.
+	Frame là một picture sau khi được encode thành bitstream rồi. 
+	Túm lại Frame là để decode, picture là để encode, Frame có nhiều NAL unit.
+
+2.	Khi investigate về 1 CODEC vd H.264 thì e thấy có rất nhiều thứ: cấu trúc streams, profile,
+Level,… vậy theo anh hiểu thì yêu cầu cơ bản để có thể nói mình biết về 1 CODEC là có thể 
+trả lời được những Câu hỏi nào về CODEC đó anh (ví dụ như: CODEC đó có ưu điểm gì?!...
+đại loại là như thế đó a )?!
+	Cơ bản khi investigate một chuẩn mới thì 
+	Trước hết xem quy trình encode decode của nó ntn. Các bước encode của nó. Cách nó xử lý, đối xử với picture input ntn.
+	Sau đó xem format input của nó quy định ra sao. RGB, YUV hỗ trợ bao nhiêu kiểu format.
+	Sau nữa xem basic unit của nó là gì, trong H264 là Macro block, có technique nào mới không, 
+	Sau đó coi output bistream của nó có quy định nào ngặt nghèo không :) frame cái mấy loại, 
+	sysntax cơ bản thế nào, cơ bản thôi, element bự bự đó.
+	Sau đó coi profile level, tool mà nó hỗ trợ, performance….
+Tạm thời như thế… có gì e sẽ hỏi típ 
